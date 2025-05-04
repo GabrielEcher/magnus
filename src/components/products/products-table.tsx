@@ -4,7 +4,12 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  ColumnFiltersState,
+  getFilteredRowModel,
   useReactTable,
+  getPaginationRowModel,
+  getSortedRowModel,
+  SortingState,
 } from "@tanstack/react-table"
 
 import {
@@ -15,6 +20,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Button } from "../ui/button"
+import { ChevronLeft, ChevronRight } from "lucide-react"
+import React from "react"
+import { Input } from "../ui/input"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -25,14 +34,38 @@ export function ProductsTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  );
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
+    state: {
+      sorting,
+      columnFilters,
+    },
   })
   
   return (
     <div className="rounded-md border">
+      <div className="flex items-center py-4 p-4 space-x-2">
+        <p className="text-sm font-medium">Filtros: </p>
+        <Input
+          placeholder="Pesquise um produto..."
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("name")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
+      </div>
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -70,12 +103,33 @@ export function ProductsTable<TData, TValue>({
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
+                Nenhum produto encontrado.
               </TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
+      <div className="flex flex-col sm:flex-row items-center justify-between px-4 py-4 bg-background border-t space-y-2 sm:space-y-0">
+            <div className="text-sm text-muted-foreground">
+              Mostrando {table.getRowModel().rows.length} de {data.length} produtos
+            </div>
+            <div className="flex items-center space-x-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <div className="text-sm font-medium">
+                Página {table.getState().pagination.pageIndex + 1} de {table.getPageCount()}
+              </div>
+              <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
     </div>
   )
 }

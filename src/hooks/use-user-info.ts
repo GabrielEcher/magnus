@@ -8,6 +8,7 @@ interface UserData {
     id: string;
     name: string;
     email: string;
+    avatarUrl: string | null;
     companyName: string;
     companyLogo: string | null;
     cnpj: string;

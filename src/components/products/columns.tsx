@@ -1,7 +1,7 @@
 import { Product } from "@/types/products/products"
 import { ColumnDef } from "@tanstack/react-table"
 import { Badge } from "../ui/badge"
-import { Tag, Trash2 } from "lucide-react"
+import { ArrowUpDown, Tag, Trash2 } from "lucide-react"
 import { Button } from "../ui/button"
 import { ConfirmDeleteDialog } from "../dialogs/delete-dialog"
 import { useDeleteProduct } from "@/hooks/products/delete-product"
@@ -64,7 +64,18 @@ export const columns: ColumnDef<Product>[] = [
     },
     {
         accessorKey: "stock",
-        header: "Estoque",
+        header: ({ column }) => {
+            return (
+              <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+              >
+                Estoque
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+              </Button>
+            )
+          },
+
     },
     {
         accessorKey: "actions",

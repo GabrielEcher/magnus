@@ -8,8 +8,8 @@ function App() {
 
   return (
     <AuthProvider>
-      <ThemeProvider>
-        <Toaster richColors duration={4000} position='bottom-right' closeButton />
+      <ThemeProvider defaultTheme="dark">
+        <Toaster  duration={4000} position='bottom-right' closeButton />
         <AppRouter />
       </ThemeProvider>
 

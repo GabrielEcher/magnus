@@ -1,4 +1,4 @@
-import { GalleryVerticalEnd, Loader2 } from "lucide-react"
+import { Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -71,17 +71,17 @@ export default function LoginPage() {
     return (
         <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10">
             <div className="flex w-full max-w-sm flex-col gap-6">
-                <a href="#" className="flex items-center gap-2 self-center font-medium">
-                    <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
-                        <GalleryVerticalEnd className="size-4" />
+                <a href="/" className="flex items-center gap-2 self-center font-medium">
+                    <div className="flex w-48 items-center justify-center rounded-md text-primary-foreground">
+                        <img src="/magnus_white.png" alt="" />
                     </div>
-                    Acme Inc.
+                    
                 </a>
                 <div className={cn("flex flex-col gap-6")}>
                     <Card>
                         <CardHeader className="text-center">
-                            <CardTitle className="text-xl">Welcome back</CardTitle>
-                            <CardDescription>Login with your Apple or Google account</CardDescription>
+                            <CardTitle className="text-xl">Seja bem-vindo</CardTitle>
+                            <CardDescription>Faça login com sua conta</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <FormProvider {...form}>
@@ -149,9 +149,9 @@ export default function LoginPage() {
                                             </Button>
                                         </div>
                                         <div className="text-center text-sm">
-                                            Don&apos;t have an account?{" "}
+                                            Não tem uma conta?{" "}
                                             <a href="#" className="underline underline-offset-4">
-                                                Sign up
+                                                Registrar
                                             </a>
                                         </div>
                                     </div>
@@ -160,7 +160,7 @@ export default function LoginPage() {
                         </CardContent>
                     </Card>
                     <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  ">
-                        By clicking continue, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+                        Ao clicar em continuar você concorda com nossos <a href="#">Termos de serviço</a> e <a href="#">Política de Privacidade</a>.
                     </div>
                 </div>
             </div>

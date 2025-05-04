@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Building2 } from "lucide-react"
 import { SidebarTrigger } from "../ui/sidebar"
-import { ModeToggle } from "../theme/mode-toggle"
 import { useUserData } from "@/hooks/use-user-info"
 
 
@@ -22,16 +21,15 @@ export function Header() {
     <header className="border-b bg-background sticky">
       <div className=" flex h-14 items-center justify-between py-4">
         <div className="flex items-center gap-4 p-4">
-          <h1 className="text-xl font-bold"><SidebarTrigger/> Dashboard</h1>
+          <h1 className="text-xl font-bold"><SidebarTrigger/></h1>
         </div>
         
-        <div className="flex items-center gap-4 mr-4">
-        <ModeToggle/>
+        <div className="flex items-center gap-4 mr-1">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative w-14 h-8 rounded-full">
-                <Avatar className="w-14 h-10">
-                  <AvatarImage className="object-cover" src="/aura.jpg" alt="Company Logo" />
+              <Button variant="ghost" className="relative w-12 h-12 rounded-full hover:scale-105 transition-transform duration-300 ease-in-out">
+                <Avatar className="w-12 h-12">
+                  <AvatarImage  src={userData?.companyLogo ?? ""} alt="Company Logo" />
                   <AvatarFallback>
                     <Building2 className="h-4 w-4" />
                   </AvatarFallback>
@@ -47,11 +45,11 @@ export function Header() {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="flex flex-col items-start">
-                <span className="text-xs font-semibold">Address</span>
+                <span className="text-xs font-semibold">Endereço</span>
                 <span className="text-xs"></span>
               </DropdownMenuItem>
               <DropdownMenuItem className="flex flex-col items-start">
-                <span className="text-xs font-semibold">Phone</span>
+                <span className="text-xs font-semibold">Contato</span>
                 <span className="text-xs"></span>
               </DropdownMenuItem>
               <DropdownMenuItem className="flex flex-col items-start">

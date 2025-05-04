@@ -3,6 +3,7 @@ import { columns } from "@/components/products/columns"
 import { useProducts } from "@/hooks/products/get-products"
 import { CreateProductDialog } from "@/components/products/create-product-dialog"
 import { CreateCategoryDialog } from "@/components/categories/create-category-dialog"
+import { CategoriesListDialog } from "@/components/categories/categories-list-dialog"
 export default function Products() {
   const { data } = useProducts()
   return (
@@ -14,6 +15,7 @@ export default function Products() {
       <div className="pl-12 flex justify-end items-center gap-2 pr-4">
       <CreateProductDialog />
       <CreateCategoryDialog />
+      <CategoriesListDialog />
       </div>
       <div className="p-4">
       <ProductsTable columns={columns} data={data} />
