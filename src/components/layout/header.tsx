@@ -21,7 +21,7 @@ export function Header() {
     <header className="border-b bg-background sticky">
       <div className=" flex h-14 items-center justify-between py-4">
         <div className="flex items-center gap-4 p-4">
-          <h1 className="text-xl font-bold"><SidebarTrigger/></h1>
+          <h1 className="text-xl font-bold"><SidebarTrigger /></h1>
         </div>
         
         <div className="flex items-center gap-4 mr-1">
@@ -46,15 +46,15 @@ export function Header() {
               <DropdownMenuSeparator />
               <DropdownMenuItem className="flex flex-col items-start">
                 <span className="text-xs font-semibold">Endereço</span>
-                <span className="text-xs"></span>
+                <span className="text-xs">{userData?.companyAddress}</span>
               </DropdownMenuItem>
               <DropdownMenuItem className="flex flex-col items-start">
                 <span className="text-xs font-semibold">Contato</span>
-                <span className="text-xs"></span>
+                <span className="text-xs">{userData?.companyContact}</span>
               </DropdownMenuItem>
               <DropdownMenuItem className="flex flex-col items-start">
                 <span className="text-xs font-semibold">Email</span>
-                <span className="text-xs">{userData?.email}</span>
+                <span className="text-xs">{userData?.companyEmail}</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

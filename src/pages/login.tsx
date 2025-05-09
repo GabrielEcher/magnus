@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useAuth } from "@/hooks/use-auth"
-import { useLocation, useNavigate } from "react-router-dom"
+import { Navigate, useLocation, useNavigate } from "react-router-dom"
 import { useCallback, useEffect, useState } from "react"
 import { useForm, FormProvider } from "react-hook-form"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
@@ -56,18 +56,22 @@ export default function LoginPage() {
 
 
     useEffect(() => {
-        const params = new URLSearchParams(location.search);
-        const token = params.get('token');
+        const handleToken = async () => {
+            const params = new URLSearchParams(location.search);
+            const token = params.get('token');
 
-        if (token) {
-            signInWithToken(token);
-            navigate('/app');
-        }
+            if (token) {
+                await signInWithToken(token);
+                navigate('/app');
+            }
+        };
+        
+        handleToken();
     }, [location.search, navigate, signInWithToken]);
 
-    if (authenticated) {
-        navigate('/app');
-    }
+   if (authenticated) {
+    return <Navigate to={localStorage.getItem('lastPath') || '/app'} replace />;
+  }
     return (
         <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10">
             <div className="flex w-full max-w-sm flex-col gap-6">

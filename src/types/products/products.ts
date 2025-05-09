@@ -9,3 +9,9 @@ export interface Product {
   categoryName: string
   stock: number
 }
+
+export type ProductImages = ProductImage[]
+export interface ProductImage {
+  imageId: string
+  imageUrl: string
+}

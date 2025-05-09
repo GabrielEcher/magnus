@@ -1,26 +1,12 @@
+import { ProductImages } from "@/types/products/products";
 import { api_db } from "@/services/api/api";
-
-import { AxiosError, AxiosPromise } from "axios";
 import { useQuery } from "@tanstack/react-query";
+import { AxiosError, AxiosPromise } from "axios";
 import { toast } from "sonner";
 
-interface UserData {
-    id: string;
-    name: string;
-    email: string;
-    avatarUrl: string | null;
-    companyName: string;
-    companyLogo: string | null;
-    companyEmail: string;
-    companyContact: string;
-    companyAddress: string;
-    cnpj: string;
-    companyId: string;
-}
-
-const fetchUserData = async (): AxiosPromise<UserData> => {
+const fetchImages = async (productId: string): AxiosPromise<ProductImages> => {
     try {
-        const response = await api_db.get<UserData>("/users/info")
+        const response = await api_db.get<ProductImages>(`/products/photo/${productId}`)
         return response;
     }
     catch (error: AxiosError | unknown) {
@@ -31,7 +17,7 @@ const fetchUserData = async (): AxiosPromise<UserData> => {
                 })
             }
             if (error.response?.status === 500) {
-                toast.error('Erro inesperado ao buscar foto do usuário', {
+                toast.error('Erro inesperado ao buscar produtos', {
                     description: 'Tente fazer login novamente'
                 })
             }
@@ -46,21 +32,19 @@ const fetchUserData = async (): AxiosPromise<UserData> => {
             }
         }
         return Promise.reject(error);
-    }
+}
 }
 
-export function useUserData() {
-
+export function useProductImages(productId: string) {
     const query = useQuery({
-        queryFn: fetchUserData,
-        queryKey: ['user-data'],
-        refetchOnWindowFocus: false,
-        retry: 3,
-        refetchOnMount: false,
+        queryFn: () => fetchImages(productId),
+        queryKey: [`images-${productId}`],
+        retry: 2,
+        refetchOnMount: true,
+        refetchOnWindowFocus: false
     })
-
     return {
         ...query,
-        data: query.data?.data
+        data: query.data
     }
 }

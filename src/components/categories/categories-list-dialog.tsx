@@ -2,7 +2,7 @@
 
 import { Pencil, X, Check, Trash2, Tags } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { useCategories } from "@/hooks/categories/get-categories"
 import { useState } from "react"
 import { Input } from "@/components/ui/input"
@@ -190,7 +190,9 @@ export function CategoriesListDialog() {
         <DialogHeader>
           <DialogTitle>Veja as categorias dos seus Produtos</DialogTitle>
         </DialogHeader>
-
+        <DialogDescription>
+          Edite ou exclua as categorias de seus produtos
+        </DialogDescription>
         <div className="mt-4">
           {isLoading ? (
             <p className="text-center py-4 text-muted-foreground">Carregando categorias...</p>

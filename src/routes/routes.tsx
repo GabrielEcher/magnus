@@ -1,10 +1,9 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy } from 'react';
 import {
     BrowserRouter,
     Route,
     Routes,
     useLocation,
-    useNavigate,
 } from 'react-router-dom'
 import PrivateRoute from './private-routes';
 import Layout from '@/components/layout/layout';
@@ -13,25 +12,23 @@ const HomePage = lazy(() => import('@/pages/home'));
 const ProductsPage = lazy(() => import('@/pages/products'));
 const SalesPage = lazy(() => import('@/pages/sales'));
 const PurchasesPage = lazy(() => import('@/pages/purchases'));
-
+const ProductImagesPage = lazy(() => import('@/components/products/product-gallery-page'))
+const CompanyPage = lazy(() => import('@/pages/company'))
 const RouterContent: React.FC = () => {
     const location = useLocation();
-    const navigate = useNavigate();
-
     React.useEffect(() => {
-        localStorage.setItem('lastPath', location.pathname);
+        const fullPath = location.pathname + location.search;
+
+        // Evita salvar a página de login como último caminho
+        if (location.pathname !== '/') {
+            localStorage.setItem('lastPath', fullPath);
+        }
     }, [location]);
 
-    React.useEffect(() => {
-        const savedPath = localStorage.getItem('lastPath');
-        if (savedPath && savedPath !== '/') {
-            navigate(savedPath);
-        }
-    }, [navigate]);
 
     return (
         // <Suspense fallback={<CentralLoader/>}>
-            <Layout>
+        <Layout>
             <Routes>
                 <Route path="/" element={<LoginPage />} />
                 <Route path="/app" >
@@ -39,19 +36,29 @@ const RouterContent: React.FC = () => {
                     <Route index element={<HomePage />} />
                     <Route path="products" element={
                         <PrivateRoute>
-                        < ProductsPage/>
+                            <ProductsPage />
                         </PrivateRoute>
-                    } 
-                    />
+                    } />
+                    <Route path="products/gallery" element={
+                        <PrivateRoute>
+                            <ProductImagesPage />
+                        </PrivateRoute>
+                    } />
                     <Route path="sales" element={
                         <PrivateRoute>
-                        < SalesPage/>
+                            < SalesPage />
                         </PrivateRoute>
                     }
                     />
                     <Route path="purchases" element={
                         <PrivateRoute>
-                        < PurchasesPage/>
+                            < PurchasesPage />
+                        </PrivateRoute>
+                    }
+                    />
+                    <Route path="company" element={
+                        <PrivateRoute>
+                            < CompanyPage />
                         </PrivateRoute>
                     }
                     />
@@ -59,7 +66,7 @@ const RouterContent: React.FC = () => {
             </Routes>
         </Layout>
         // </Suspense>
-        
+
     )
 }
 

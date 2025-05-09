@@ -9,7 +9,7 @@ function App() {
   return (
     <AuthProvider>
       <ThemeProvider defaultTheme="dark">
-        <Toaster  duration={4000} position='bottom-right' closeButton />
+        <Toaster  richColors duration={4000} position='bottom-right' closeButton />
         <AppRouter />
       </ThemeProvider>
 

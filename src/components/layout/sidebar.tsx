@@ -1,14 +1,14 @@
 "use client"
 
-import { Boxes, Building2, ChevronUp, DollarSign, Home, LogOut, Moon, ShoppingBag, Sun } from "lucide-react"
-
+import { Boxes, Building2, ChevronUp, DollarSign, Home, Icon, LogOut, Moon, ShoppingBag, Sun } from "lucide-react"
+import { planet } from '@lucide/lab'
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -73,26 +73,34 @@ export function AppSidebar() {
   }
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" variant={"floating"}>
       <SidebarContent>
         <SidebarGroup className="">
           {/* Logo for collapsed state */}
           <div className="ml-0.2 hidden h-12 w-full items-center justify-center group-data-[collapsible=icon]:flex">
-            <img
+            <Icon iconNode={planet} size={35}/>
+            {/* <img
               src={theme === "dark" ? "/magnus_logo_only.png" : "/logo_orange.png"}
               alt="Logo"
               className="h-8 w-8 object-contain transition-all duration-200"
-            />
+            /> */}
           </div>
 
-          {/* Logo for expanded state */}
-          <SidebarGroupLabel className="mb-4 mt-4 group-data-[collapsible=icon]:hidden">
+          
+          {/* <SidebarGroupLabel className="mb-4 mt-4 group-data-[collapsible=icon]:hidden">
             <img
               src={theme === "dark" ? "/magnus_white.png" : "/magnus_black.png"}
               alt="Magnus Logo"
               className="w-full object-contain"
             />
-          </SidebarGroupLabel>
+            
+          </SidebarGroupLabel> */}
+          <SidebarHeader className="group-data-[collapsible=icon]:hidden mb-5">
+            <div className="flex items-center gap-3">
+            <Icon iconNode={planet} size={35}/><h1 className="text-2xl font-bold">Magnus</h1>
+            </div>
+              
+          </SidebarHeader>
 
           <SidebarGroupContent>
             <SidebarMenu>

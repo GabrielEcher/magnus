@@ -18,7 +18,6 @@ api_db.interceptors.request.use(config => {
     const authToken = getAuthToken();
     if (authToken) {
         config.headers['Authorization'] = 'Bearer ' + authToken;
-        config.headers['Content-Type'] = 'application/json'
     }
     return config;
 });
