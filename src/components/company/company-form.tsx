@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { ImageUpload } from "./company-image-upload"
+import { useUploadImageLogo } from "@/hooks/company/update-logo"
 
 const infoSchema = z.object({
   companyName: z.string().min(2),
@@ -22,6 +23,7 @@ const infoSchema = z.object({
   cnpj: z.string().regex(/^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/),
 })
 
+export type CompanyInfoData = z.infer<typeof infoSchema>
 const logoSchema = z.object({
   companyLogo: z
     .any()
@@ -43,7 +45,7 @@ interface CompanyFormProps {
 
 export function CompanyForm({ initialData }: CompanyFormProps) {
   const [isLoading, setIsLoading] = useState(false)
-
+  const { mutateAsync: uploadLogo, isPending: isPendingLogo } = useUploadImageLogo()
   const infoForm = useForm<z.infer<typeof infoSchema>>({
     resolver: zodResolver(infoSchema),
     defaultValues: {
@@ -70,10 +72,7 @@ export function CompanyForm({ initialData }: CompanyFormProps) {
   }
 
   async function onLogoSubmit(values: z.infer<typeof logoSchema>) {
-    setIsLoading(true)
-    console.log("Submitting company logo:", values)
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    setIsLoading(false)
+    await uploadLogo({file: [values.companyLogo]})
   }
 
   return (
@@ -99,7 +98,7 @@ export function CompanyForm({ initialData }: CompanyFormProps) {
             />
             <div className="flex justify-end">
               <Button type="submit" disabled={isLoading}>
-                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                {isPendingLogo && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Salvar Logo
               </Button>
             </div>
@@ -119,7 +118,7 @@ export function CompanyForm({ initialData }: CompanyFormProps) {
                   <FormItem>
                     <FormLabel>Nome da Empresa</FormLabel>
                     <FormControl>
-                      <Input placeholder="Acme Corp." {...field} disabled={isLoading} />
+                      <Input placeholder="Sua Empresa Ltda" {...field} disabled={isLoading} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

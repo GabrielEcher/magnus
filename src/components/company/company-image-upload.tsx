@@ -1,53 +1,49 @@
 "use client"
 
 import type React from "react"
-
 import { useEffect, useState } from "react"
-
 import { ImageIcon, X } from "lucide-react"
-
 import { Button } from "@/components/ui/button"
 
 interface ImageUploadProps {
   value: string | null
-  onChange: (value: string | null) => void
+  onChange: (file: File | null) => void
   disabled?: boolean
 }
 
 export function ImageUpload({ value, onChange, disabled }: ImageUploadProps) {
-  const [isMounted, setIsMounted] = useState(false)
-
+  const [selectedImage, setSelectedImage] = useState<File | null>(null)
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  
   useEffect(() => {
-    setIsMounted(true)
-  }, [])
-
-  // This would typically handle file upload to a storage service
-  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-
-    if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        onChange(reader.result as string)
-      }
-      reader.readAsDataURL(file)
+    if (selectedImage) {
+      const objectUrl = URL.createObjectURL(selectedImage)
+      setPreviewUrl(objectUrl)
+      return () => URL.revokeObjectURL(objectUrl)
+    } else {
+      setPreviewUrl(null)
     }
+  }, [selectedImage])
+
+  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null
+    setSelectedImage(file)
+    onChange(file)
   }
 
   const handleRemove = () => {
-    onChange(null)
+    setSelectedImage(null)
+    // Não chama onChange(null), assim mantemos o value original
   }
 
-  if (!isMounted) {
-    return null
-  }
+  const showImage = previewUrl || value
 
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       <div className="relative h-40 w-40 overflow-hidden rounded-md border border-border">
-        {value ? (
+        {showImage ? (
           <div className="relative h-full w-full">
-            <img src={value || "/placeholder.svg"} alt="Company logo" className="object-cover" />
+            <img src={showImage} alt="Company logo" className="object-cover w-full h-full" />
             <button
               type="button"
               onClick={handleRemove}
@@ -71,7 +67,7 @@ export function ImageUpload({ value, onChange, disabled }: ImageUploadProps) {
           disabled={disabled}
           onClick={() => document.getElementById("logo-upload")?.click()}
         >
-          {value ? "Mudar logo" : "Carregar logo"}
+          {value || previewUrl ? "Mudar logo" : "Carregar logo"}
         </Button>
         <input
           id="logo-upload"
