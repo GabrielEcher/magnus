@@ -111,7 +111,7 @@ export function SalesTable<TData, TValue>({
       </Table>
       <div className="flex flex-col sm:flex-row items-center justify-between px-4 py-4 bg-background border-t space-y-2 sm:space-y-0">
             <div className="text-sm text-muted-foreground">
-              Mostrando {table.getRowModel().rows.length} de {data.length} compras
+              Mostrando {table.getRowModel().rows.length} de {data.length} vendas
             </div>
             <div className="flex items-center space-x-2">
               <Button
