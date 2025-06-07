@@ -15,11 +15,11 @@ import { useInsights } from "@/hooks/dashboard/get-insights"
 
 const chartConfig = {
   sales: {
-    label: "Sales",
+    label: "Vendas (R$): ",
     color: "hsl(var(--chart-1))",
   },
   purchases: {
-    label: "Purchases",
+    label: "Gastos (R$): ",
     color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig
@@ -155,14 +155,14 @@ export default function Home() {
                     tickFormatter={(value) => `R$${(value / 1000).toFixed(0)}k`}
                   />
                   <ChartTooltip
-                    cursor={{ fill: "rgba(0, 0, 0, 0.05)" }}
+                    
                     content={
-                      <ChartTooltipContent indicator="line" className=" p-2 border shadow-lg rounded-md" />
+                      <ChartTooltipContent indicator="dot" className=" p-2 border shadow-lg rounded-md" />
                     }
-                    formatter={(value, name) => [
-                      `$${Number(value).toLocaleString()}`,
-                      name === "sales" ? " Vendas" : " Compras/Gastos",
-                    ]}
+                    // formatter={(value, name) => [
+                    //   `R$${Number(value).toLocaleString()}`,
+                    //   name === "sales" ? " Vendas" : " Compras/Gastos",
+                    // ]}
                     wrapperStyle={{ outline: "none" }}
                   />
                   <Bar dataKey="purchases" fill="var(--chart-3)" radius={[0, 0, 4, 4]} />
