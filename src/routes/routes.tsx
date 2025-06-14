@@ -14,6 +14,8 @@ const SalesPage = lazy(() => import('@/pages/sales'));
 const PurchasesPage = lazy(() => import('@/pages/purchases'));
 const ProductImagesPage = lazy(() => import('@/components/products/product-gallery-page'))
 const CompanyPage = lazy(() => import('@/pages/company'))
+const LandingPage = lazy(() => import('@/pages/landing'))
+const ClientsPage = lazy(() => import('@/pages/clients'))
 const RouterContent: React.FC = () => {
     const location = useLocation();
     React.useEffect(() => {
@@ -30,7 +32,8 @@ const RouterContent: React.FC = () => {
         // <Suspense fallback={<CentralLoader/>}>
         <Layout>
             <Routes>
-                <Route path="/" element={<LoginPage />} />
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/login" element={<LoginPage />} />
                 <Route path="/app" >
                     <Route path="*" element={<HomePage />} />
                     <Route index element={<HomePage />} />
@@ -59,6 +62,12 @@ const RouterContent: React.FC = () => {
                     <Route path="company" element={
                         <PrivateRoute>
                             < CompanyPage />
+                        </PrivateRoute>
+                    }
+                    />
+                    <Route path="clients" element={
+                        <PrivateRoute>
+                            < ClientsPage />
                         </PrivateRoute>
                     }
                     />

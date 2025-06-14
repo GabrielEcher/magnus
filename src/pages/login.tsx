@@ -71,7 +71,12 @@ export default function LoginPage() {
     }, [location.search, navigate, signInWithToken]);
 
    if (authenticated) {
-    return <Navigate to={localStorage.getItem('lastPath') || '/app'} replace />;
+    const lastPath = localStorage.getItem('lastPath');
+    if (lastPath === '/login') {
+        localStorage.removeItem('lastPath');
+        return <Navigate to={'/app'} replace />;
+    }
+    return <Navigate to={lastPath || '/app'} replace />;
   }
     return (
         <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10">

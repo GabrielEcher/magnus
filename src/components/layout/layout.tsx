@@ -5,10 +5,11 @@ import { AppSidebar } from "./sidebar";
 import { Header } from "./header";
 export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
-  const isLoginPage = location.pathname === '/';
+  const isLoginPage = location.pathname === '/login';
+  const isHomePage = location.pathname === '/';
   const defaultOpen = Cookies.get("sidebar_state") === "true"
 
-  if (isLoginPage) {
+  if (isLoginPage || isHomePage) {
     return <>{children}</>;
   }
 

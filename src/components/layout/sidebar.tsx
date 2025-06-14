@@ -1,6 +1,6 @@
 "use client"
 
-import { Boxes, Building2, ChevronUp, DollarSign, Home, Icon, LogOut, Moon, ShoppingBag, Sun } from "lucide-react"
+import { Boxes, Building2, ChevronUp, ContactRound, DollarSign, Home, Icon, LogOut, Moon, ShoppingBag, Sun } from "lucide-react"
 import { planet } from '@lucide/lab'
 import {
   Sidebar,
@@ -33,6 +33,11 @@ const items = [
     title: "Início",
     url: "/app",
     icon: Home,
+  },
+  {
+    title: "Clientes",
+    url: "/app/clients",
+    icon: ContactRound
   },
   {
     title: "Produtos",
