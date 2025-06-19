@@ -10,4 +10,5 @@ export interface Sale {
   totalRevenue: number
   saleDate: string
   paid: boolean
+  clientName: string
 }

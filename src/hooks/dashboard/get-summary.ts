@@ -1,5 +1,5 @@
 import { api_db } from "@/services/api/api";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { AxiosError, AxiosPromise } from "axios";
 import { toast } from "sonner";
 import { Summary } from "@/types/dashboard/summary";
@@ -36,7 +36,7 @@ const fetchSummary = async (): AxiosPromise<Summary> => {
 }
 
 export function useSummary() {
-    const query = useQuery({
+    const query = useSuspenseQuery({
         queryFn: fetchSummary,
         queryKey: ['summary'],
         retry: 2,

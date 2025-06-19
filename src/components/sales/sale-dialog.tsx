@@ -1,133 +1,116 @@
-"use client"
-
-import type React from "react"
-
-import { useState } from "react"
-
-import type { Product } from "@/types/products/products"
-import { Check, ChevronsUpDown, Loader2, PlusCircle } from "lucide-react"
-
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { usePostSale } from "@/hooks/products/sales/post-sale"
 import { Button } from "@/components/ui/button"
+import { Loader2, PlusCircle } from "lucide-react"
 import {
   Dialog,
+  DialogTrigger,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+  DialogDescription,
+  DialogFooter,
 } from "@/components/ui/dialog"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { cn } from "@/lib/utils"
+import { useSaleForm } from "@/lib/zod/sale"
+import { ProductsSelect } from "../products/products-select"
+import { ClientsSelect } from "../clients/clients-select"
 import { useProducts } from "@/hooks/products/get-products"
-import { usePostSale } from "@/hooks/products/sales/post-sale"
+import { useClients } from "@/hooks/clients/get-clients"
+import { useState } from "react"
+
+
+type SaleFormValues = {
+  productId: string
+  clientId: string
+  quantity: number
+}
 
 export default function SaleDialog() {
   const [open, setOpen] = useState(false)
-  const [comboboxOpen, setComboboxOpen] = useState(false)
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
-  const [quantity, setQuantity] = useState(1)
+  const form = useSaleForm()
+  const { mutateAsync: createSale, isPending } = usePostSale()
+  const productId = form.watch("productId")
+  const clientId = form.watch("clientId")
+  const { data: products = [] } = useProducts()
+  const { data: clients = [] } = useClients()
 
-  const { data: products, isLoading: isLoadingProducts } = useProducts()
-  const { mutate: createSale, isPending } = usePostSale()
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-
-    if (!selectedProduct) return
-
-    createSale(
-      {
-        productId: selectedProduct.publicId,
-        quantity,
-      },
-      {
-        onSuccess: () => {
-          setOpen(false)
-          setSelectedProduct(null)
-          setQuantity(1)
-        },
-      },
-    )
+  const selectedProduct = products.find(p => p.publicId === productId)
+  const selectedClient = clients.find(c => c.publicId === clientId)
+  async function onSubmit(values: SaleFormValues) {
+    await createSale({
+      productId: values.productId,
+      quantity: values.quantity,
+      clientId: values.clientId,
+    })
+    form.reset()
+    setOpen(false)
   }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="default"><PlusCircle/>Adicionar Venda</Button>
+        <Button variant="default" className="hover:scale-105 transition-all duration-300">
+          <PlusCircle/> Adicionar Venda
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Criar Venda</DialogTitle>
-          <DialogDescription>Selecione um produto e especifique a quantidade do mesmo.</DialogDescription>
+          <DialogDescription>
+            Selecione produto, cliente e especifique a quantidade.
+          </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="product">Produto</Label>
-              <Popover open={comboboxOpen} onOpenChange={setComboboxOpen}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    role="combobox"
-                    aria-expanded={comboboxOpen}
-                    className="justify-between"
-                    disabled={isLoadingProducts}
-                  >
-                    {isLoadingProducts ? (
-                      <span className="flex items-center gap-2">
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        Carregando produtos...
-                      </span>
-                    ) : selectedProduct ? (
-                      selectedProduct.name
-                    ) : (
-                      "Selecione o produto..."
-                    )}
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="p-0">
-                  <Command>
-                    <CommandInput placeholder="Pesquise o produto..." />
-                    <CommandList>
-                      <CommandEmpty>Nenhum produto encontrado.</CommandEmpty>
-                      <CommandGroup className="max-h-[300px] overflow-y-auto">
-                        {products.map((product) => (
-                          <CommandItem
-                            key={product.publicId}
-                            value={product.name}
-                            onSelect={() => {
-                              setSelectedProduct(product)
-                              setComboboxOpen(false)
-                            }}
-                          >
-                            <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                selectedProduct?.publicId === product.publicId ? "opacity-100" : "opacity-0",
-                              )}
-                            />
-                            <div className="flex flex-col">
-                              <span>{product.name}</span>
-                              <span className="text-xs text-muted-foreground">
-                                Preço: ${product.price} | Estoque: {product.stock}
-                              </span>
-                            </div>
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </PopoverContent>
-              </Popover>
-            </div>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="grid gap-4 py-4">
+              <FormField
+                control={form.control}
+                name="productId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Produto</FormLabel>
+                    <FormControl>
+                      <ProductsSelect value={field.value} onSelect={field.onChange} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
+              <FormField
+                control={form.control}
+                name="clientId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Cliente</FormLabel>
+                    <FormControl>
+                      <ClientsSelect value={field.value} onSelect={field.onChange} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="quantity"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Quantidade</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        {...field}
+                        value={field.value ?? 1}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             {selectedProduct && (
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4 mb-4">
                 <div className="flex flex-col gap-1">
                   <span className="text-sm font-medium">Categoria</span>
                   <span className="text-sm">{selectedProduct.categoryName}</span>
@@ -147,36 +130,42 @@ export default function SaleDialog() {
               </div>
             )}
 
-            <div className="grid gap-2">
-              <Label htmlFor="quantity">Quantidade</Label>
-              <Input
-                id="quantity"
-                type="number"
-                value={quantity}
-                onChange={(e) => setQuantity(Number.parseInt(e.target.value)|| 0)}
-                disabled={!selectedProduct}
-              />
-            </div>
+            {selectedClient && (
+              <div className="grid gap-2 mb-4 p-3 bg-muted rounded-md">
+                <div className="flex justify-between items-center">
+                  <span className="font-medium">Cliente:</span>
+                  <span className="font-bold">{selectedClient.name}</span>
+                </div>
+                {selectedClient.email && (
+                  <div className="flex justify-between items-center text-sm text-muted-foreground">
+                    <span>Email:</span>
+                    <span>{selectedClient.email}</span>
+                  </div>
+                )}
+              </div>
+            )}
 
             {selectedProduct && (
               <div className="mt-2 p-3 bg-muted rounded-md">
                 <div className="flex justify-between items-center">
                   <span className="font-medium">Total:</span>
-                  <span className="font-bold">${(selectedProduct.price * quantity).toFixed(2)}</span>
+                  <span className="font-bold">
+                    R${(selectedProduct.price * (Number(form.watch("quantity")) || 0)).toFixed(2)}
+                  </span>
                 </div>
               </div>
             )}
-          </div>
-          <DialogFooter>
-            <Button
-              type="submit"
-              disabled={!selectedProduct || isPending || quantity < 1}
-            >
-              {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {isPending ? "Salvando a venda..." : "Salvar"}
-            </Button>
-          </DialogFooter>
-        </form>
+            <DialogFooter className="mt-4">
+              <Button
+                type="submit"
+                disabled={isPending}
+              >
+                {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                {isPending ? "Salvando..." : "Salvar"}
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   )

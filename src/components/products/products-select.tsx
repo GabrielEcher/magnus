@@ -11,18 +11,18 @@ import {
 } from "@/components/ui/command"
 import { cn } from "@/lib/utils"
 import { useState } from "react"
-import { useClients } from "@/hooks/clients/get-clients"
+import { useProducts } from "@/hooks/products/get-products"
 
-interface ClientsSelectProps {
+interface ProductsSelectProps {
   value?: string
   onSelect: (value: string) => void
 }
 
-export function ClientsSelect({ value, onSelect }: ClientsSelectProps) {
+export function ProductsSelect({ value, onSelect }: ProductsSelectProps) {
   const [open, setOpen] = useState(false)
-  const { data: clients = [], isLoading } = useClients()
+  const { data: products = [], isLoading } = useProducts()
 
-  const selected = clients.find(c => c.publicId === value)
+  const selected = products.find(p => p.publicId === value)
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -42,35 +42,40 @@ export function ClientsSelect({ value, onSelect }: ClientsSelectProps) {
           ) : selected ? (
             selected.name
           ) : (
-            "Selecione o cliente..."
+            "Selecione o produto..."
           )}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0">
         <Command>
-          <CommandInput placeholder="Pesquise o cliente..." />
+          <CommandInput placeholder="Pesquise o produto..." />
           <CommandList>
-            <CommandEmpty>Nenhum cliente encontrado.</CommandEmpty>
+            <CommandEmpty>Nenhum produto encontrado.</CommandEmpty>
             <CommandGroup className="max-h-[300px] overflow-y-auto">
-              {clients.map(client => (
+              {products.map(product => (
                 <CommandItem
-                  key={client.publicId}
-                  value={client.name}
+                  key={product.publicId}
+                  value={product.name}
                   onSelect={() => {
-                    onSelect(client.publicId)
+                    onSelect(product.publicId)
                     setOpen(false)
                   }}
                 >
                   <Check
                     className={cn(
                       "mr-2 h-4 w-4",
-                      selected?.publicId === client.publicId
+                      selected?.publicId === product.publicId
                         ? "opacity-100"
                         : "opacity-0"
                     )}
                   />
-                  {client.name}
+                  <div className="flex flex-col">
+                    <span>{product.name}</span>
+                    <span className="text-xs text-muted-foreground">
+                      R${product.price} | Estoque: {product.stock}
+                    </span>
+                  </div>
                 </CommandItem>
               ))}
             </CommandGroup>

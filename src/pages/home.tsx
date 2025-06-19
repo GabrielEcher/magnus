@@ -1,15 +1,11 @@
-"use client"
 
 import { CardFooter } from "@/components/ui/card"
-
 import { TrendingUp, TrendingDown, DollarSign, ShoppingCart, Package, Activity } from "lucide-react"
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { Badge } from "@/components/ui/badge"
 import { useSummary } from "@/hooks/dashboard/get-summary"
-import { useFinancialSummary } from "@/hooks/dashboard/get-financial-summary"
 import { useMonthlyReport } from "@/hooks/dashboard/get-monthly-report"
 import { useInsights } from "@/hooks/dashboard/get-insights"
 
@@ -25,21 +21,22 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export default function Home() {
-  const { data: insights } = useInsights();
-  const { data: monthlyData } = useMonthlyReport();
-  const { data: summary } = useSummary();
-  const { data: financialSummary } = useFinancialSummary();
-  
+  const { data: insights } = useInsights()
+  const { data: monthlyData } = useMonthlyReport()
+  const { data: summary } = useSummary()
+
   return (
     <div className="min-h-screen p-4">
       {/* Header */}
       <header className="pl-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold ">Indicadores da Sua Empresa</h1>
-            <p className="">Monitore a performance do seu negócio</p>
+            <h1 className="text-2xl font-bold">Indicadores da Sua Empresa</h1>
+            <p className="text-muted-foreground">Monitore a performance do seu negócio</p>
           </div>
-          <div className="text-sm text-muted-foreground">Ultima atualização: {new Date().toLocaleDateString()}</div>
+          <div className="text-sm text-muted-foreground">
+            Última atualização: {new Date().toLocaleDateString("pt-BR")}
+          </div>
         </div>
       </header>
 
@@ -50,33 +47,68 @@ export default function Home() {
           {/* Total Sales Card */}
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Faturado</CardTitle>
+              <CardTitle className="text-sm font-medium">Total Vendas</CardTitle>
               <DollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">R${summary?.totalSales.toLocaleString()}</div>
+              <div className="text-2xl font-bold">
+                R$ {summary?.totalSales?.toLocaleString("pt-BR") || "0"}
+                <span>
+                  {summary?.totalReceivable > 0 && (
+                    <Badge variant="outline" className="ml-2">
+                      A receber: R$ {summary?.totalReceivable?.toLocaleString("pt-BR") || "0"}
+                    </Badge>
+                  )}
+                  
+                  </span>
+              </div>
               <p className="text-xs text-muted-foreground">
-                <span className="text-green-600 flex items-center">
-                  <TrendingUp className="h-3 w-3 mr-1" />+{summary?.salesGrowth}% desde o ano passado
+                <span
+                  className={`flex items-center ${summary?.salesGrowthPaid >= 0 ? "text-green-600" : "text-red-600"}`}
+                >
+                  {summary?.salesGrowthPaid >= 0 ? (
+                    <TrendingUp className="h-3 w-3 mr-1" />
+                  ) : (
+                    <TrendingDown className="h-3 w-3 mr-1" />
+                  )}
+                  {summary?.salesGrowthPaid >= 0 ? "+" : ""}
+                  {summary?.salesGrowthPaid || 0}% desde o ano passado
                 </span>
               </p>
+            </CardContent>
+          </Card>
+
+          {/* Total Revenue Card */}
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Receita Total</CardTitle>
+              <Activity className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">R$ {summary?.totalRevenue?.toLocaleString("pt-BR") || "0"}</div>
+              <p className="text-xs text-muted-foreground">Receita bruta do período</p>
             </CardContent>
           </Card>
 
           {/* Total Purchases Card */}
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Gasto</CardTitle>
+              <CardTitle className="text-sm font-medium">Total Gastos</CardTitle>
               <ShoppingCart className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">R${summary?.totalPurchases.toLocaleString()}</div>
+              <div className="text-2xl font-bold">R$ {summary?.totalPurchases?.toLocaleString("pt-BR") || "0"}</div>
               <p className="text-xs text-muted-foreground">
-                <span className="text-orange-600 flex items-center">
-                  
+                <span
+                  className={`flex items-center ${summary?.purchasesGrowth >= 0 ? "text-orange-600" : "text-green-600"}`}
+                >
+                  {summary?.purchasesGrowth >= 0 ? (
                     <TrendingUp className="h-3 w-3 mr-1" />
-                  
-                  {summary?.purchasesGrowth}% desde o ano passado
+                  ) : (
+                    <TrendingDown className="h-3 w-3 mr-1" />
+                  )}
+                  {summary?.purchasesGrowth >= 0 ? "+" : ""}
+                  {summary?.purchasesGrowth || 0}% desde o ano passado
                 </span>
               </p>
             </CardContent>
@@ -85,44 +117,73 @@ export default function Home() {
           {/* Total Products Card */}
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total de Produtos Vendidos</CardTitle>
+              <CardTitle className="text-sm font-medium">Produtos Vendidos</CardTitle>
               <Package className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{summary?.totalProductsSold.toLocaleString()}</div>
-              <p className="text-xs text-muted-foreground">
-                <span className="flex items-center">
-                  {/* <TrendingUp className="h-3 w-3 mr-1" /> */}
-                  Produtos vendidos no ano atual
-                </span>
-              </p>
+              <div className="text-2xl font-bold">{summary?.totalProductsSold?.toLocaleString("pt-BR") || "0"}</div>
+              <p className="text-xs text-muted-foreground">Produtos vendidos no período</p>
             </CardContent>
           </Card>
+        </div>
 
-          {/* Cash Flow Card */}
+        {/* Cash Flow Cards */}
+        <div className="grid gap-6 md:grid-cols-2 mb-8">
+          {/* Real Cash Flow Card */}
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Fluxo de Caixa</CardTitle>
+              <CardTitle className="text-sm font-medium">Fluxo de Caixa Real</CardTitle>
               <Activity className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">R${Math.abs(summary?.cashFlow ?? 0).toLocaleString()}</div>
+              <div className="text-2xl font-bold">
+                R$ {Math.abs(summary?.cashFlowReal ?? 0).toLocaleString("pt-BR")}
+              </div>
               <div className="flex items-center space-x-2 mt-2">
                 <Badge
-                  variant={summary?.cashFlowPositive ? "default" : "destructive"}
-                  className={summary?.cashFlowPositive ? "bg-green-100 text-green-800 hover:bg-green-100" : ""}
+                  variant={summary?.cashFlowRealPositive ? "default" : "destructive"}
+                  className={summary?.cashFlowRealPositive ? "bg-green-100 text-green-800 hover:bg-green-100" : ""}
                 >
-                  {summary?.cashFlowPositive ? (
+                  {summary?.cashFlowRealPositive ? (
                     <TrendingUp className="h-3 w-3 mr-1" />
                   ) : (
                     <TrendingDown className="h-3 w-3 mr-1" />
                   )}
-                  {summary?.cashFlowPositive ? "Positivo" : "Negativo"}
+                  {summary?.cashFlowRealPositive ? "Positivo" : "Negativo"}
                 </Badge>
               </div>
               <p className="text-xs text-muted-foreground mt-1">
-                {summary?.cashFlowPositive ? "Seu negócio está gerando lucro" : "Revise seus gastos para melhorar o fluxo de caixa"}
+                {summary?.cashFlowRealPositive
+                  ? "Seu negócio está gerando lucro real"
+                  : "Revise seus gastos para melhorar o fluxo de caixa"}
               </p>
+            </CardContent>
+          </Card>
+
+          {/* Theoretical Cash Flow Card */}
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Fluxo de Caixa Teórico</CardTitle>
+              <Activity className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                R$ {Math.abs(summary?.cashFlowTheoretical ?? 0).toLocaleString("pt-BR")}
+              </div>
+              <div className="flex items-center space-x-2 mt-2">
+                <Badge
+                  variant={summary?.cashFlowTheoreticalPositive ? "default" : "destructive"}
+                  className={summary?.cashFlowTheoreticalPositive ? "bg-blue-100 text-blue-800 hover:bg-blue-100" : ""}
+                >
+                  {summary?.cashFlowTheoreticalPositive ? (
+                    <TrendingUp className="h-3 w-3 mr-1" />
+                  ) : (
+                    <TrendingDown className="h-3 w-3 mr-1" />
+                  )}
+                  {summary?.cashFlowTheoreticalPositive ? "Positivo" : "Negativo"}
+                </Badge>
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">Projeção baseada em vendas pendentes</p>
             </CardContent>
           </Card>
         </div>
@@ -152,17 +213,11 @@ export default function Home() {
                     tickLine={false}
                     axisLine={false}
                     tickMargin={8}
-                    tickFormatter={(value) => `R$${(value / 1000).toFixed(0)}k`}
+
+                    tickFormatter={(value) => `R${(value / 1000).toFixed(0)}k`}
                   />
                   <ChartTooltip
-                    
-                    content={
-                      <ChartTooltipContent indicator="dot" className=" p-2 border shadow-lg rounded-md" />
-                    }
-                    // formatter={(value, name) => [
-                    //   `R$${Number(value).toLocaleString()}`,
-                    //   name === "sales" ? " Vendas" : " Compras/Gastos",
-                    // ]}
+                    content={<ChartTooltipContent indicator="dot" className="p-2 border shadow-lg rounded-md" />}
                     wrapperStyle={{ outline: "none" }}
                   />
                   <Bar dataKey="purchases" fill="var(--chart-3)" radius={[0, 0, 4, 4]} />
@@ -189,7 +244,7 @@ export default function Home() {
         <div className="grid gap-6 md:grid-cols-2 mt-8">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Insights de negócio</CardTitle>
+              <CardTitle className="text-lg">Insights de Negócio</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-start space-x-3">
@@ -197,25 +252,42 @@ export default function Home() {
                 <div>
                   <p className="font-medium">Performance das Vendas</p>
                   <p className="text-sm text-muted-foreground">
-                    {insights?.salesPerformance}
+                    {insights?.salesPerformance || "Dados não disponíveis"}
                   </p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
-                <div className={`w-2 h-2 ${summary?.cashFlowPositive ? "bg-green-500" : "bg-red-500"} rounded-full mt-2`}></div>
+                <div
+                  className={`w-2 h-2 ${summary?.cashFlowRealPositive ? "bg-green-500" : "bg-red-500"} rounded-full mt-2`}
+                ></div>
                 <div>
-                  <p className="font-medium">Status do Fluxo de Caixa</p>
+                  <p className="font-medium">Status do Fluxo de Caixa Real</p>
                   <p className="text-sm text-muted-foreground">
-                    {insights?.cashFlowStatus}
+                    {summary?.cashFlowRealPositive
+                      ? "Fluxo de caixa positivo - negócio saudável"
+                      : "Fluxo de caixa negativo - atenção necessária"}
                   </p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
-                <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                <div
+                  className={`w-2 h-2 ${summary?.cashFlowTheoreticalPositive ? "bg-blue-500" : "bg-orange-500"} rounded-full mt-2`}
+                ></div>
                 <div>
-                  <p className="font-medium">Portifólio de Produtos</p>
+                  <p className="font-medium">Projeção Teórica</p>
                   <p className="text-sm text-muted-foreground">
-                    {insights?.productPortfolio}
+                    {summary?.cashFlowTheoreticalPositive
+                      ? "Projeção positiva considerando vendas pendentes"
+                      : "Projeção indica necessidade de melhoria"}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start space-x-3">
+                <div className="w-2 h-2 bg-purple-500 rounded-full mt-2"></div>
+                <div>
+                  <p className="font-medium">Portfólio de Produtos</p>
+                  <p className="text-sm text-muted-foreground">
+                    {insights?.productPortfolio || `${summary?.totalProductsSold || 0} produtos vendidos no período`}
                   </p>
                 </div>
               </div>
@@ -224,28 +296,48 @@ export default function Home() {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Sumário Financeiro</CardTitle>
+              <CardTitle className="text-lg">Resumo Financeiro</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium">Receita Bruta</span>
-                <span className="text-sm font-bold">${financialSummary?.grossRevenue.toLocaleString()}</span>
+                <span className="text-sm font-medium">Receita Total</span>
+                <span className="text-sm font-bold">R$ {summary?.totalRevenue?.toLocaleString("pt-BR") || "0"}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium">Vendas Realizadas</span>
+                <span className="text-sm font-bold">R$ {summary?.totalSales?.toLocaleString("pt-BR") || "0"}</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium">Gastos Totais</span>
-                <span className="text-sm font-bold">-${financialSummary?.totalExpenses.toLocaleString()}</span>
+                <span className="text-sm font-bold text-red-600">
+                  -R$ {summary?.totalPurchases?.toLocaleString("pt-BR") || "0"}
+                </span>
               </div>
               <div className="border-t pt-2">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium">Lucro Liquído</span>
-                  <span className={`text-sm font-bold ${summary?.cashFlowPositive ? "text-green-600" : "text-red-600"}`}>
-                    {financialSummary?.netProfit.toLocaleString()}
+                  <span className="text-sm font-medium">Fluxo de Caixa Real</span>
+                  <span
+                    className={`text-sm font-bold ${summary?.cashFlowRealPositive ? "text-green-600" : "text-red-600"}`}
+                  >
+                    {summary?.cashFlowRealPositive ? "+" : "-"}R${" "}
+                    {Math.abs(summary?.cashFlowReal ?? 0).toLocaleString("pt-BR")}
                   </span>
                 </div>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium">Margem de Lucro</span>
-                <span className="text-sm font-bold">{financialSummary?.profitMargin}%</span>
+                <span className="text-sm font-medium">Fluxo Teórico</span>
+                <span
+                  className={`text-sm font-bold ${summary?.cashFlowTheoreticalPositive ? "text-blue-600" : "text-orange-600"}`}
+                >
+                  {summary?.cashFlowTheoreticalPositive ? "+" : "-"}R${" "}
+                  {Math.abs(summary?.cashFlowTheoretical ?? 0).toLocaleString("pt-BR")}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium">Produtos Vendidos</span>
+                <span className="text-sm font-bold">
+                  {summary?.totalProductsSold?.toLocaleString("pt-BR") || "0"} unidades
+                </span>
               </div>
             </CardContent>
           </Card>

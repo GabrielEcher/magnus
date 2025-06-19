@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import React, { lazy, Suspense } from 'react';
 import {
     BrowserRouter,
     Route,
@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom'
 import PrivateRoute from './private-routes';
 import Layout from '@/components/layout/layout';
+import { SuspenseLoader } from '@/components/layout/suspense-loader';
 const LoginPage = lazy(() => import('@/pages/login'));
 const HomePage = lazy(() => import('@/pages/home'));
 const ProductsPage = lazy(() => import('@/pages/products'));
@@ -29,7 +30,7 @@ const RouterContent: React.FC = () => {
 
 
     return (
-        // <Suspense fallback={<CentralLoader/>}>
+        <Suspense fallback={<SuspenseLoader/>}>
         <Layout>
             <Routes>
                 <Route path="/" element={<LandingPage />} />
@@ -74,7 +75,7 @@ const RouterContent: React.FC = () => {
                 </Route>
             </Routes>
         </Layout>
-        // </Suspense>
+         </Suspense>
 
     )
 }

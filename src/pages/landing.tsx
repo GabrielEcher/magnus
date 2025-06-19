@@ -21,12 +21,20 @@ import {
 } from "lucide-react"
 import {  useState } from "react"
 import { useTheme } from "@/hooks/use-theme"
-import { useNavigate } from "react-router-dom"
+import { Navigate, useNavigate } from "react-router-dom"
+import { useAuth } from "@/hooks/use-auth"
 
-export default function Component() {
+export default function LandingPage() {
   const {theme, setTheme } = useTheme()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const navigate = useNavigate()
+  const { authenticated } = useAuth();
+
+  if (authenticated) {
+    const lastPath = localStorage.getItem("lastPath")
+
+    return <Navigate to={lastPath ? lastPath : "/app"} replace />
+  }
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-background to-muted/20">
       {/* Header */}

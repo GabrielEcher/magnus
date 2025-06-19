@@ -1,9 +1,13 @@
 export interface Summary {
   totalSales: number
+  totalRevenue: number
   totalPurchases: number
   totalProductsSold: number
-  cashFlow: number
-  cashFlowPositive: boolean
-  salesGrowth: number
+  cashFlowReal: number
+  cashFlowRealPositive: boolean
+  cashFlowTheoretical: number
+  cashFlowTheoreticalPositive: boolean
+  salesGrowthPaid: number
   purchasesGrowth: number
+  totalReceivable: number
 }

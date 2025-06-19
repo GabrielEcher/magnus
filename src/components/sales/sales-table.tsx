@@ -65,6 +65,14 @@ export function SalesTable<TData, TValue>({
           }
           className="max-w-sm"
         />
+        <Input
+          placeholder="Pesquise um cliente..."
+          value={(table.getColumn("clientName")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("clientName")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
       </div>
       <Table>
         <TableHeader>

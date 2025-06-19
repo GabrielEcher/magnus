@@ -46,7 +46,7 @@ export const clientsColumns: ColumnDef<Client>[] = [
           <ConfirmDeleteDialog
           onConfirm={handleDelete}         
            trigger={
-            <Button className="hover:scale-105 transition-all duration-300" disabled={row.original.hasSales} variant={"outline"} size={"icon"}>
+            <Button className="hover:scale-105 transition-all duration-300" disabled={row.original.hasSales} variant={"destructive"} size={"icon"}>
               <Trash2 />
             </Button>
           }

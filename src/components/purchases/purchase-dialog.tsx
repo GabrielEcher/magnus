@@ -57,7 +57,7 @@ export default function PurchaseDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="default"><PlusCircle/>Adicionar Compra</Button>
+        <Button className="hover:scale-105 transition-all duration-300" variant="default"><PlusCircle/>Adicionar Compra</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

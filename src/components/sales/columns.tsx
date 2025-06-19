@@ -1,12 +1,13 @@
 import { Sale } from "@/types/sales/sale";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "../ui/button";
-import { CheckCircle2, Clock, Trash2 } from "lucide-react";
+import { ArrowUpDown, CheckCircle2, Clock, Trash2 } from "lucide-react";
 import { useDeleteSale } from "@/hooks/products/sales/delete-sale";
 import { ConfirmDeleteDialog } from "../dialogs/delete-dialog";
 import { Checkbox } from "../ui/checkbox";
 import { usePaidSale } from "@/hooks/products/sales/change-sale-paid-status";
 import { useState } from "react";
+import { EditSaleDialog } from "./edit-sale-dialog";
 
 export const salesColumns: ColumnDef<Sale>[] = [
 
@@ -42,7 +43,17 @@ export const salesColumns: ColumnDef<Sale>[] = [
   },
   {
     accessorKey: "totalRevenue",
-    header: "Total Venda",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Total Vendido
+          <ArrowUpDown />
+        </Button>
+      )
+    },
     cell: ({ row }) => {
       const totalSpent = row.original.totalRevenue
       return (
@@ -52,7 +63,17 @@ export const salesColumns: ColumnDef<Sale>[] = [
   },
   {
     accessorKey: "saleDate",
-    header: "Data da Venda",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Data da Venda
+          <ArrowUpDown />
+        </Button>
+      )
+    },
     cell: ({ row }) => {
       const saleDate = row.original.saleDate
       const date = new Date(saleDate)
@@ -62,8 +83,23 @@ export const salesColumns: ColumnDef<Sale>[] = [
     }
   },
   {
+    accessorKey: "clientName",
+    header: "Cliente",
+  },
+  {
     accessorKey: "paid",
-    header: "Status Pagamento",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Status Pagamento
+          <ArrowUpDown />
+        </Button>
+      )
+    },
+    
     cell: function Cell({ row }) {
       const { mutateAsync: paySale } = usePaidSale()
       const [localStatus, setLocalStatus] = useState(row.original.paid)
@@ -112,6 +148,7 @@ export const salesColumns: ColumnDef<Sale>[] = [
       const { mutateAsync: deleteSale } = useDeleteSale()
       return (
         <>
+        <EditSaleDialog clientName={row.original.clientName} saleId={row.original.saleId} />
           <ConfirmDeleteDialog trigger={
             <Button variant="destructive" size="sm" className=" hover:scale-105 transition-all duration-300">
               <Trash2 className="w-4 h-4" />
