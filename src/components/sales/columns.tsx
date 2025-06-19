@@ -12,6 +12,7 @@ import { EditSaleDialog } from "./edit-sale-dialog";
 export const salesColumns: ColumnDef<Sale>[] = [
 
   {
+    id: "productLogo",
     accessorKey: "productLogo",
     header: "",
     cell: ({ row }) => {
@@ -23,15 +24,18 @@ export const salesColumns: ColumnDef<Sale>[] = [
     }
   },
   {
+    id: "productName",
     accessorKey: "productName",
     header: "Produto",
 
   },
   {
+    id: "quantity",
     accessorKey: "quantity",
     header: "Quantidade",
   },
   {
+    id: "sellPrice",
     accessorKey: "sellPrice",
     header: "Preço de Venda",
     cell: ({ row }) => {
@@ -42,6 +46,7 @@ export const salesColumns: ColumnDef<Sale>[] = [
     },
   },
   {
+    id: "totalRevenue",
     accessorKey: "totalRevenue",
     header: ({ column }) => {
       return (
@@ -62,6 +67,7 @@ export const salesColumns: ColumnDef<Sale>[] = [
     },
   },
   {
+    id: "saleDate",
     accessorKey: "saleDate",
     header: ({ column }) => {
       return (
@@ -83,10 +89,12 @@ export const salesColumns: ColumnDef<Sale>[] = [
     }
   },
   {
+    id: "clientName",
     accessorKey: "clientName",
     header: "Cliente",
   },
   {
+    id: "paid",
     accessorKey: "paid",
     header: ({ column }) => {
       return (

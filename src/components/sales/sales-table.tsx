@@ -24,6 +24,7 @@ import { Button } from "../ui/button"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import React from "react"
 import { Input } from "../ui/input"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -38,9 +39,29 @@ export function SalesTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  const isMobile = useIsMobile()
+
+  // Filter columns based on whether it's mobile or not
+  const visibleColumns = React.useMemo(() => {
+    // Define the accessorKeys of the columns you want to show on mobile
+    const mobileVisibleColumnKeys = [
+      "productName",
+      "quantity",
+      "paid", // This corresponds to "Status Pagamento"
+      "totalRevenue", // This corresponds to "Total Vendido"
+    ];
+
+    if (isMobile) {
+      return columns.filter(column =>
+        mobileVisibleColumnKeys.includes(column.id as string)
+      );
+    }
+    return columns;
+  }, [isMobile, columns]); // Re-calculate only when isMobile or columns change
+
   const table = useReactTable({
     data,
-    columns,
+    columns: visibleColumns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
@@ -140,4 +161,5 @@ export function SalesTable<TData, TValue>({
           </div>
     </div>
   )
+
 }
