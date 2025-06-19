@@ -34,9 +34,6 @@ export default function Home() {
             <h1 className="text-2xl font-bold">Indicadores da Sua Empresa</h1>
             <p className="text-muted-foreground">Monitore a performance do seu negócio</p>
           </div>
-          <div className="text-sm text-muted-foreground">
-            Última atualização: {new Date().toLocaleDateString("pt-BR")}
-          </div>
         </div>
       </header>
 
