@@ -1,4 +1,4 @@
-import { LoaderCircle, Pencil } from "lucide-react";
+import { LoaderCircle } from "lucide-react";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { EditSaleFormValues, useEditSaleForm } from "@/lib/zod/sale";
@@ -12,8 +12,9 @@ import { useEditSale } from "@/hooks/products/sales/edit-sale";
 interface EditSaleDialogProps {
     saleId: string;
     clientName: string;
+    trigger: React.ReactNode;
 }
-export function EditSaleDialog({ clientName, saleId }: EditSaleDialogProps) {
+export function EditSaleDialog({ clientName, saleId, trigger }: EditSaleDialogProps) {
     const [open, setOpen] = useState(false)
     const { data: clients = [], isLoading } = useClients()
     const { mutateAsync: editSale, isPending } = useEditSale()
@@ -47,10 +48,8 @@ export function EditSaleDialog({ clientName, saleId }: EditSaleDialogProps) {
     }
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger>
-                <Button className="hover:scale-105 transition-all duration-300 mr-1" variant={"outline"} size={"sm"}>
-                    <Pencil />
-                </Button>
+            <DialogTrigger asChild>
+                {trigger}
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>

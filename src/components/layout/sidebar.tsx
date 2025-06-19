@@ -12,6 +12,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar"
 import { NavLink } from "react-router-dom"
 import {
@@ -65,7 +66,7 @@ export function AppSidebar() {
   const { data: userData } = useUserData()
   const { signOut } = useAuth()
   const { theme, setTheme } = useTheme()
-
+  const { setOpenMobile } = useSidebar()
   // Get user initials for avatar fallback
   const getUserInitials = () => {
     if (!userData?.name) return "U"
@@ -112,7 +113,7 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <NavLink to={item.url}>
+                    <NavLink to={item.url} onClick={() => setOpenMobile(false)}>
                       <item.icon />
                       <span>{item.title}</span>
                     </NavLink>

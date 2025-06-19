@@ -2,10 +2,12 @@ import { useSales } from "@/hooks/products/sales/get-sales"
 import { SalesTable } from "@/components/sales/sales-table"
 import { salesColumns } from "@/components/sales/columns"
 import SaleDialog from "@/components/sales/sale-dialog"
+import SalesAccordion from "@/components/sales/sales-accordion"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 export default function Sales() {
-  const { data } = useSales()
-
+  const { data } = useSales();
+  const isMobile = useIsMobile();
   return (
     <div className="flex flex-col gap-4 p-4 md:p-6 lg:p-8"> {/* Added responsive padding */}
       <div className="space-y-2"> {/* Removed fixed padding for mobile */}
@@ -18,8 +20,12 @@ export default function Sales() {
         <SaleDialog />
       </div>
 
-      <div> {/* Removed fixed padding for mobile */}
-        <SalesTable columns={salesColumns} data={data} />
+      <div>
+        {isMobile ? (
+          <SalesAccordion sales={data} />
+        ) : (
+          <SalesTable columns={salesColumns} data={data} />
+        )}
       </div>
     </div>
   )

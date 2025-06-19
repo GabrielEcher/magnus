@@ -1,7 +1,7 @@
 import { Sale } from "@/types/sales/sale";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "../ui/button";
-import { ArrowUpDown, CheckCircle2, Clock, Trash2 } from "lucide-react";
+import { ArrowUpDown, CheckCircle2, Clock, Pencil, Trash2 } from "lucide-react";
 import { useDeleteSale } from "@/hooks/products/sales/delete-sale";
 import { ConfirmDeleteDialog } from "../dialogs/delete-dialog";
 import { Checkbox } from "../ui/checkbox";
@@ -156,7 +156,13 @@ export const salesColumns: ColumnDef<Sale>[] = [
       const { mutateAsync: deleteSale } = useDeleteSale()
       return (
         <>
-        <EditSaleDialog clientName={row.original.clientName} saleId={row.original.saleId} />
+        <EditSaleDialog clientName={row.original.clientName} saleId={row.original.saleId} 
+        trigger={
+          <Button className="hover:scale-105 transition-all duration-300 mr-1" variant={"outline"} size={"sm"}>
+                    <Pencil />
+                </Button>
+        }
+        />
           <ConfirmDeleteDialog trigger={
             <Button variant="destructive" size="sm" className=" hover:scale-105 transition-all duration-300">
               <Trash2 className="w-4 h-4" />

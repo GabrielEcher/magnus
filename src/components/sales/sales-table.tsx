@@ -161,5 +161,4 @@ export function SalesTable<TData, TValue>({
           </div>
     </div>
   )
-
 }
