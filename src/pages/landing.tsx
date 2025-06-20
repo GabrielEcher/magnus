@@ -57,9 +57,6 @@ export default function LandingPage() {
           <a href="#features" className="text-sm font-medium hover:text-blue-600 transition-colors">
             Funcionalidades
           </a>
-          <a href="#about" className="text-sm font-medium hover:text-blue-600 transition-colors">
-            Sobre
-          </a>
           <a href="#contact" className="text-sm font-medium hover:text-blue-600 transition-colors">
             Contato
           </a>
@@ -81,9 +78,6 @@ export default function LandingPage() {
             <nav className="flex flex-col p-4 space-y-4">
               <a href="#features" className="text-sm font-medium hover:text-blue-600 transition-colors">
                 Funcionalidades
-              </a>
-              <a href="#about" className="text-sm font-medium hover:text-blue-600 transition-colors">
-                Sobre
               </a>
               <a href="#contact" className="text-sm font-medium hover:text-blue-600 transition-colors">
                 Contato
@@ -127,7 +121,7 @@ export default function LandingPage() {
                   </Button>
                   <Button variant="outline" size="lg" className="w-full sm:w-auto">
                     <Phone className="mr-2 h-4 w-4" />
-                    Entre em contato
+                    <a href="https://wa.me/5551980404660" target="_blank">Entre em contato</a>
                   </Button>
                 </div>
               </div>
@@ -387,12 +381,13 @@ export default function LandingPage() {
                   Acessar o sistema agora
                 </Button>
                 <Button
+                
                   size="lg"
                   variant="outline"
                   className="border-white text-white hover:bg-white hover:text-blue-600 w-full sm:w-auto"
                 >
                   <Mail className="mr-2 h-4 w-4" />
-                  Entrar em Contato
+                  <a href="https://wa.me/5551980404660" target="_blank">Entrar em Contato</a>
                 </Button>
               </div>
             </div>
