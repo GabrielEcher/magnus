@@ -121,10 +121,9 @@ export default function LandingPage() {
                   </Button>
                   
                   <a href="https://wa.me/5551980404660" target="_blank">
-                    Entre em contato
                     <Button variant="outline" size="lg" className="w-full sm:w-auto">
                     <Phone className="mr-2 h-4 w-4" />
-                    
+                    Entre em contato
                   </Button>
                     </a>
                 </div>
@@ -393,7 +392,7 @@ export default function LandingPage() {
                   className="border-white text-white hover:bg-white hover:text-blue-600 w-full sm:w-auto"
                 >
                   <Mail className="mr-2 h-4 w-4" />
-                  
+                  Entre em contato
                 </Button>
                   
                   </a>
