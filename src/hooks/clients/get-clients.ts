@@ -40,7 +40,6 @@ export function useClients() {
         queryFn: fetchClients,
         queryKey: ['clients'],
         retry: 2,
-        refetchOnMount: true,
         refetchOnWindowFocus: false
     })
     return {

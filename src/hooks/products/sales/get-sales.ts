@@ -40,7 +40,6 @@ export function useSales() {
         queryFn: fetchSales,
         queryKey: ['sales'],
         retry: 2,
-        refetchOnMount: true,
         refetchOnWindowFocus: false
     })
     return {

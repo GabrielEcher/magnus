@@ -40,7 +40,6 @@ export function useProducts() {
         queryFn: fetchProducts,
         queryKey: ['products'],
         retry: 2,
-        refetchOnMount: true,
         refetchOnWindowFocus: false
     })
     return {

@@ -40,7 +40,6 @@ export function usePurchases() {
         queryFn: fetchPurchases,
         queryKey: ['purchases'],
         retry: 2,
-        refetchOnMount: true,
         refetchOnWindowFocus: false
     })
     return {
