@@ -119,10 +119,14 @@ export default function LandingPage() {
                     Acessar Sistema
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
-                  <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                  
+                  <a href="https://wa.me/5551980404660" target="_blank">
+                    Entre em contato
+                    <Button variant="outline" size="lg" className="w-full sm:w-auto">
                     <Phone className="mr-2 h-4 w-4" />
-                    <a href="https://wa.me/5551980404660" target="_blank">Entre em contato</a>
+                    
                   </Button>
+                    </a>
                 </div>
               </div>
 
@@ -380,15 +384,19 @@ export default function LandingPage() {
                   <ArrowRight className="mr-2 h-4 w-4" />
                   Acessar o sistema agora
                 </Button>
-                <Button
+                
+                <a href="https://wa.me/5551980404660" target="_blank">
+                  <Button
                 
                   size="lg"
                   variant="outline"
                   className="border-white text-white hover:bg-white hover:text-blue-600 w-full sm:w-auto"
                 >
                   <Mail className="mr-2 h-4 w-4" />
-                  <a href="https://wa.me/5551980404660" target="_blank">Entrar em Contato</a>
+                  
                 </Button>
+                  
+                  </a>
               </div>
             </div>
           </div>

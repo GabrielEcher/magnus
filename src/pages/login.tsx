@@ -1,4 +1,4 @@
-import { Icon, Loader2 } from "lucide-react"
+import { ArrowRight, Icon, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -154,7 +154,9 @@ export default function LoginPage() {
                                                 />
                                             </div>
                                             <Button type="submit" className="w-full" disabled={loading}>
-                                                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                                {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" />:
+                                                <ArrowRight className="mr-2 h-4 w-4" />
+                                                }
                                                 Login
                                             </Button>
                                         </div>
