@@ -22,7 +22,7 @@ export default function Products() {
       <CategoriesListDialog />
       </div>
       <div className="p-4">
-        {isMobile ? (
+        {!isMobile ? (
           <ProductsTable columns={columns} data={data} />
         ) : (
           <ProductsAccordion products={data} />
