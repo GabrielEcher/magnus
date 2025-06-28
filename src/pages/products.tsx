@@ -16,7 +16,7 @@ export default function Products() {
       <h1 className="text-2xl font-bold ">Produtos</h1>
       <p className="text-muted-foreground">Gerencie seus produtos</p>
       </div>
-      <div className="pl-12 flex justify-end items-center gap-2 pr-4">
+      <div className="flex justify-end items-center gap-2 pr-4">
       <CreateProductDialog />
       <CreateCategoryDialog />
       <CategoriesListDialog />
