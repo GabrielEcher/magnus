@@ -16,10 +16,10 @@ export default function Products() {
       <h1 className="text-2xl font-bold ">Produtos</h1>
       <p className="text-muted-foreground">Gerencie seus produtos</p>
       </div>
-      <div className="flex justify-end items-center gap-2 pr-4">
-      <CreateProductDialog />
-      <CreateCategoryDialog />
-      <CategoriesListDialog />
+      <div className="flex flex-wrap justify-center gap-2 px-4 sm:justify-end sm:gap-3 md:gap-4">
+        <CreateProductDialog />
+        <CreateCategoryDialog />
+        <CategoriesListDialog />
       </div>
       <div className="p-4">
         {!isMobile ? (
