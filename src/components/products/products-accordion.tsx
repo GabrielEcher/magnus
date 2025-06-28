@@ -55,7 +55,7 @@ export function ProductsAccordion({ products }: ProductsAccordion) {
   }, [products, searchTerm])
 
   return (
-    <div className="w-full mx-auto p-4">
+    <div className="w-full sm:max-w-4xl mx-auto p-4">
       <div className="flex space-x-2 items-center justify-between mb-4">
         {/* Input de Pesquisa Geral */}
         <Search size={20}/>
