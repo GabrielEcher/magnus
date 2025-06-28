@@ -4,8 +4,12 @@ import { useProducts } from "@/hooks/products/get-products"
 import { CreateProductDialog } from "@/components/products/create-product-dialog"
 import { CreateCategoryDialog } from "@/components/categories/create-category-dialog"
 import { CategoriesListDialog } from "@/components/categories/categories-list-dialog"
+import { ProductsAccordion } from "@/components/products/products-accordion"
+import { useIsMobile } from "@/hooks/use-mobile"
 export default function Products() {
   const { data } = useProducts()
+  const isMobile = useIsMobile();
+
   return (
     <div className="flex flex-col gap-4">
       <div className="pl-12 pt-6 space-y-2">
@@ -18,7 +22,11 @@ export default function Products() {
       <CategoriesListDialog />
       </div>
       <div className="p-4">
-      <ProductsTable columns={columns} data={data} />
+        {isMobile ? (
+          <ProductsTable columns={columns} data={data} />
+        ) : (
+          <ProductsAccordion products={data} />
+        )}
       </div>
       
     </div>

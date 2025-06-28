@@ -1,9 +1,12 @@
 import { usePurchases } from "@/hooks/products/purchases/get-purchases"
 import { purchasesColumns } from "@/components/purchases/columns"
 import { PurchasesTable } from "@/components/purchases/purchases-table"
-import PurchaseDialog from "@/components/purchases/purchase-dialog"
+import { PurchaseDialog } from "@/components/purchases/purchase-dialog"
+import { PurchasesAccordion }  from "@/components/purchases/purchases-accordion"
+import { useIsMobile } from "@/hooks/use-mobile"
 export default function Purchases() {
   const { data} = usePurchases()  
+  const isMobile = useIsMobile();
   return (
       <div className="flex flex-col gap-4">
             <div className="pl-12 pt-6 space-y-2">
@@ -14,7 +17,11 @@ export default function Purchases() {
             <PurchaseDialog/>
             </div>
             <div className="p-4">
-            <PurchasesTable columns={purchasesColumns} data={data} />
+              {isMobile ? (
+                <PurchasesAccordion purchases={data} />
+              ) : (
+                <PurchasesTable columns={purchasesColumns} data={data} />
+              )}
             </div>
             
           </div>

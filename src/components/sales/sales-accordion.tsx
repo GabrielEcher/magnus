@@ -226,7 +226,7 @@ export default function SalesAccordion({ sales }: SalesAccordionProps) {
                     <div className="flex">
                       <ConfirmDeleteDialog
                         onConfirm={async () => {
-                          await deleteSale(sale.saleId)
+                          await deleteSale(sale.movementId)
                         }}
                         title="Tem certeza que deseja excluir esta venda?"
                         description="Esta ação não poderá ser desfeita."

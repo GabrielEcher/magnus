@@ -1,7 +1,7 @@
 import { Product } from "@/types/products/products"
 import { ColumnDef } from "@tanstack/react-table"
 import { Badge } from "../ui/badge"
-import { ArrowUpDown, Image, Tag, Trash2 } from "lucide-react"
+import { ArrowUpDown, Edit, Image, Tag, Trash2 } from "lucide-react"
 import { Button } from "../ui/button"
 import { ConfirmDeleteDialog } from "../dialogs/delete-dialog"
 import { useDeleteProduct } from "@/hooks/products/delete-product"
@@ -87,7 +87,13 @@ export const columns: ColumnDef<Product>[] = [
             const { mutateAsync: deleteProduct } = useDeleteProduct()
             return (
                 <div className="flex items-center gap-2">
-                    <EditProductDialog product={product} />
+                    <EditProductDialog product={product}
+                    trigger={
+                        <Button variant={"ghost"} className="hover:scale-110 transistion-all duration-300">
+    <Edit className="h-4 w-4" />
+        </Button>
+                    }
+                    />
 
                     <ConfirmDeleteDialog
                         trigger={

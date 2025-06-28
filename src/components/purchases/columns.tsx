@@ -1,8 +1,11 @@
+import { useDeletePurchase } from "@/hooks/products/purchases/delete-purchase";
 import { Purchase } from "@/types/purchases/purchase";
 import { ColumnDef } from "@tanstack/react-table";
+import { ConfirmDeleteDialog } from "../dialogs/delete-dialog";
+import { Button } from "../ui/button";
+import { Trash2 } from "lucide-react";
 
-export const purchasesColumns: ColumnDef<Purchase>[] =[
-  
+export const purchasesColumns: ColumnDef<Purchase>[] = [
   {
     accessorKey: "productLogo",
     header: "",
@@ -17,7 +20,6 @@ export const purchasesColumns: ColumnDef<Purchase>[] =[
   {
     accessorKey: "productName",
     header: "Produto",
-
   },
   {
     accessorKey: "quantity",
@@ -31,7 +33,7 @@ export const purchasesColumns: ColumnDef<Purchase>[] =[
       return (
         <span className="font-medium">R$ {buyPrice}</span>
       )
-  },
+    }
   },
   {
     accessorKey: "totalSpent",
@@ -41,8 +43,8 @@ export const purchasesColumns: ColumnDef<Purchase>[] =[
       return (
         <span className="font-medium">R$ {totalSpent}</span>
       )
+    }
   },
-},
   {
     accessorKey: "purchaseDate",
     header: "Data da Compra",
@@ -50,8 +52,30 @@ export const purchasesColumns: ColumnDef<Purchase>[] =[
       const purchaseDate = row.original.purchaseDate
       const date = new Date(purchaseDate)
       return (
-            <span>{date.toLocaleDateString()}</span>
+        <span>{date.toLocaleDateString()}</span>
       )
+    }
   },
-}
+  {
+    id: "actions",
+    cell: function Cell({ row }) {
+      const purchase = row.original
+      const { mutateAsync: deletePurchase } = useDeletePurchase()
+      return (
+        <>
+          <ConfirmDeleteDialog trigger={
+            <Button variant="destructive" size="sm" className=" hover:scale-105 transition-all duration-300">
+              <Trash2 className="w-4 h-4" />
+            </Button>
+          }
+            onConfirm={() => {
+              deletePurchase(purchase.movementId)
+            }}
+            title="Excluir Compra"
+            description="Tem certeza que deseja excluir essa compra?"
+          />
+        </>
+      )
+    }
+  }
 ]

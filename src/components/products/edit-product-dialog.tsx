@@ -1,4 +1,4 @@
-import { Edit, Save } from "lucide-react";
+import { Save } from "lucide-react";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { FormProvider } from "react-hook-form";
@@ -12,9 +12,10 @@ import { useEditProduct } from "@/hooks/products/update-product";
 
 interface EditProductDialogProps {
   product: Product | null;
+  trigger: React.ReactNode;
 }
 
-export function EditProductDialog({ product }: EditProductDialogProps) {
+export function EditProductDialog({ product, trigger }: EditProductDialogProps) {
     const [open, setOpen] = useState(false);
     const { mutateAsync: editProduct, isPending } = useEditProduct();
     const form = useEditProductForm();
@@ -43,9 +44,7 @@ export function EditProductDialog({ product }: EditProductDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant={"ghost"} className="hover:scale-110 transistion-all duration-300">
-    <Edit className="h-4 w-4" />
-        </Button>
+      {trigger}
       </DialogTrigger>
 
       <DialogContent>

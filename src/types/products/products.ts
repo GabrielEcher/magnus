@@ -8,6 +8,7 @@ export interface Product {
   categoryId: string
   categoryName: string
   stock: number
+  imageUrl: string
 }
 
 export type ProductImages = ProductImage[]

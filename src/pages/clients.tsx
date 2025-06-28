@@ -4,9 +4,12 @@ import { ClientDialog } from "@/components/clients/client-dialog";
 import { useClients } from "@/hooks/clients/get-clients";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
+import ClientsAccordion from "@/components/clients/clients-accordion";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function Clients() {
   const { data } = useClients();
+  const isMobile = useIsMobile();
   return (
     <div className="flex flex-col gap-4">
       <div className="pl-12 pt-6 space-y-2">
@@ -24,7 +27,11 @@ export default function Clients() {
           } />
       </div>
       <div className="p-4">
-        <ClientsTable columns={clientsColumns} data={data} />
+        {isMobile ? (
+          <ClientsAccordion clients={data} />
+        ) : (
+          <ClientsTable columns={clientsColumns} data={data} />
+        )}
       </div>
 
     </div>

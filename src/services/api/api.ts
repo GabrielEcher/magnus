@@ -5,11 +5,11 @@ const getAuthToken = () => {
 };
 
 export const api_db = axios.create({
-    baseURL: "https://magnus-app.com.br/api/v1/",
+    baseURL: "http://localhost:8000/api/v1/",
 });
 
 export const api_auth = axios.create({
-    baseURL: "https://magnus-app.com.br/api/v1/auth/",
+    baseURL: "http://localhost:8000/api/v1/auth/",
 });
 // http://localhost:8000/api/v1/auth/
 // http://localhost:8000/api/v1/

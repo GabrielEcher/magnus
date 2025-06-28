@@ -8,4 +8,5 @@ export interface Purchase {
   buyPrice: number
   totalSpent: number
   purchaseDate: string
+  movementId: string
 }

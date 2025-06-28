@@ -25,7 +25,7 @@ import { cn } from "@/lib/utils"
 import { useProducts } from "@/hooks/products/get-products"
 import { usePostPurchase } from "@/hooks/products/purchases/post-purchase"
 
-export default function PurchaseDialog() {
+export function PurchaseDialog() {
   const [open, setOpen] = useState(false)
   const [comboboxOpen, setComboboxOpen] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)

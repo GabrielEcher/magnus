@@ -37,6 +37,7 @@ export default function SaleDialog() {
 
   const selectedProduct = products.find(p => p.publicId === productId)
   const selectedClient = clients.find(c => c.publicId === clientId)
+  const profitMargin = selectedProduct ? ((selectedProduct.price - selectedProduct.buyPrice) / selectedProduct.buyPrice * 100) : 0
   async function onSubmit(values: SaleFormValues) {
     await createSale({
       productId: values.productId,
@@ -127,6 +128,10 @@ export default function SaleDialog() {
                   <span className="text-sm font-medium">Preço de Compra</span>
                   <span className="text-sm">R${selectedProduct.buyPrice}</span>
                 </div>
+                <div className="flex flex-col gap-1">
+                  <span className="text-sm font-medium">Margem de lucro</span>
+                  <span className="text-sm">{profitMargin.toFixed(2)}%</span>
+                </div>
               </div>
             )}
 
@@ -158,7 +163,7 @@ export default function SaleDialog() {
             <DialogFooter className="mt-4">
               <Button
                 type="submit"
-                disabled={isPending}
+                disabled={isPending || selectedProduct?.stock === 0}
               >
                 {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 {isPending ? "Salvando..." : "Salvar"}
