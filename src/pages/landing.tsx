@@ -405,7 +405,7 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="flex flex-col gap-4 py-6 w-full shrink-0 items-center px-4 border-t bg-muted/30 sm:flex-row md:px-6">
         <p className="text-xs text-muted-foreground text-center sm:text-left">
-          © 2024 Magnus. Todos direitos reservados.
+          © 2025 Magnus. Todos direitos reservados.
         </p>
         <nav className="flex gap-4 sm:ml-auto sm:gap-6">
           <a href="#" className="text-xs hover:underline underline-offset-4 text-muted-foreground">
