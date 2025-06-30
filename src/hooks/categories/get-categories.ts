@@ -21,15 +21,6 @@ const fetchCategories = async (): AxiosPromise<ProductsCategories> => {
                     description: 'Tente fazer login novamente'
                 })
             }
-            if (error.response?.status === 401) {
-                localStorage.clear();
-                window.location.href = '/';
-                setTimeout(() => {
-                    toast.error('Sessão expirada', {
-                        description: 'Faça login novamente'
-                    })
-                }, 1000)
-            }
         }
         return Promise.reject(error);
 }
